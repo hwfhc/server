@@ -11,8 +11,8 @@
 int main(int argc, char *argv[])
 {
     int pid,err;
-    time_t timep;
-    struct tm *p;
+    time_t date = time(0);
+    char t_str[128];
 
     char buf[1024];
 
@@ -53,10 +53,9 @@ int main(int argc, char *argv[])
         pid = fork();
         if(pid != 0){
             // in child process
-            time(&timep);
-            p = gmtime(&timep);
+            strftime(t_str,sizeof(t_str),"%Y-%m-%d %H:%M:%S",localtime(&date));
 
-            strcpy(buf,"%d",p->tm_sec);
+            strcpy(buf,t_str);
 
             write(cli_sock,buf,sizeof(buf));
             close(cli_sock);
